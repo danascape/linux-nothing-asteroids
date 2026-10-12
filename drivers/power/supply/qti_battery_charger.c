@@ -2825,22 +2825,6 @@ static int usb_psy_get_prop(struct power_supply *psy,
 		return rc;
 
 	pval->intval = pst->prop[prop_id];
-
-	/*
-	 * Phantom-charging guard: the ADSP can latch USB_ONLINE=1 while no
-	 * real source is attached (icl/ibus all zero, plug_in=0) — e.g. when
-	 * the plug-detect GPIO stays asserted but charge negotiation never
-	 * produces a source. Cross-check against the same VBUS threshold
-	 * nt_update_status_function_work() uses as ground-truth for "plug
-	 * present" and report offline when no real source is on the bus.
-	 */
-	if (prop == POWER_SUPPLY_PROP_ONLINE && pval->intval) {
-		int vbus_rc = read_property_id(bcdev, pst, USB_VOLT_NOW);
-
-		if (!vbus_rc && pst->prop[USB_VOLT_NOW] < PLUGIN_VOLTAGE)
-			pval->intval = 0;
-	}
-
 	if (prop == POWER_SUPPLY_PROP_TEMP)
 		pval->intval = DIV_ROUND_CLOSEST((int)pval->intval, 10);
 
