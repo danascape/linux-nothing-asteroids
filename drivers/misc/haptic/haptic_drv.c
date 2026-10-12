@@ -102,7 +102,6 @@ int32_t haptic_hw_reset(struct ics_haptic_data *haptic_data);
 	return byte_count;
 }
 */
-#if 0
 static ssize_t chip_id_show(struct device *dev,
 	struct device_attribute *attr, char *buf)
 {
@@ -583,7 +582,6 @@ static ssize_t stream_data_show(struct device *dev,
 
 	return len;
 }
-#endif
 
 static int32_t send_stream_data(struct ics_haptic_data *haptic_data, uint32_t fifo_available_size)
 {
@@ -607,7 +605,6 @@ static int32_t send_stream_data(struct ics_haptic_data *haptic_data, uint32_t fi
 	return 0;
 }
 
-#if 0
 static ssize_t stream_data_store(struct device *dev,
 	struct device_attribute *attr, const char *buf, size_t count)
 {
@@ -957,7 +954,6 @@ static struct attribute *ics_haptic_attributes[] = {
 static struct attribute_group ics_haptic_attribute_group = {
 	.attrs = ics_haptic_attributes
 };
-#endif
 
 static irqreturn_t ics_haptic_irq_handler(int irq, void *data)
 {
@@ -1412,7 +1408,7 @@ static void vibrator_enable(struct timed_output_dev *dev, int value)
 	}
 	mutex_unlock(&haptic_data->lock);
 }
-#elif 0
+#else
 static enum led_brightness brightness_get(struct led_classdev *vdev)
 {
 	struct ics_haptic_data *haptic_data = container_of(vdev, struct ics_haptic_data, vib_dev);
@@ -1614,7 +1610,7 @@ static int32_t vibrator_init(struct ics_haptic_data *haptic_data)
 		ics_err("%s: failed to create sysfs attr files!\n", __func__);
 		return ret;
 	}
-#elif 0
+#else
 	ics_info("%s: led cdev framework!\n", __func__);
 	haptic_data->vib_dev.name = haptic_data->vib_name;
 	haptic_data->vib_dev.brightness_get = brightness_get;
